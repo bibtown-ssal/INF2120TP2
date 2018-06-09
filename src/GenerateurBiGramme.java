@@ -9,10 +9,10 @@ public class GenerateurBiGramme <T> extends ArrayList <T> {
 
     public Iterator<Pair<T,T>> iterator(int delta){
 
-        return new BiGramme<>(delta);
+        return new BiGramme(delta);
     }
 
-    public class BiGramme <U> implements Iterator<Pair<U, U>>{
+    public class BiGramme implements Iterator<Pair<T, T>>{
         private int debut;
         private int dernier;
         private int delta;
@@ -30,8 +30,8 @@ public class GenerateurBiGramme <T> extends ArrayList <T> {
         }
 
         @Override
-        public Pair<U, U> next() {
-            Pair<U,U> temp = new Pair<U,U>(get(this.debut), get(this.dernier));
+        public Pair<T, T> next() {
+            Pair<T,T> temp = new Pair<>(get(this.debut), get(this.dernier));
 
             if(this.dernier < size()-1 && (this.dernier - this.debut) < delta){
                 this.dernier++;
