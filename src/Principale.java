@@ -43,16 +43,28 @@ public class Principale <E> {
 
     private static double comparerDifferenceBigramme(ArrayList<Pair<String,String>> set1, ArrayList<Pair<String,String>> set2){
         double cpt = 0;
-        double s1 = set1.size();
         double s2 = set2.size();
         int i = 0;
-        //compter les bigrammes concordants
-        while(i < set1.size()){
+        int j;
+        boolean trouve;
 
+        while(i < set1.size()){
+            j = 0;
+            trouve = false;
+            while(!trouve && j < set2.size()){
+                if(bigrammesEgaux(set1.get(i), set2.get(j))){
+                    set2.remove(j);
+                    trouve = true;
+                    cpt++;
+                }else{
+                    j++;
+                }
+            }
+            i++;
         }
 
 
-        return (2*(cpt/s1)*(cpt/s2))/(cpt/s1+cpt/s2);
+        return (2*(cpt/set1.size())*(cpt/s2))/(cpt/set1.size()+cpt/s2);
     }
 
     private static void genererBigramme(String[] phrase, ArrayList<Pair<String,String>> bigrammes, int delta){
@@ -69,6 +81,11 @@ public class Principale <E> {
 
     }
 
+    private static boolean bigrammesEgaux(Pair<String, String> pair1, Pair<String,String> pair2){
+
+        return (pair1.premiere.equalsIgnoreCase(pair2.premiere))
+                && (pair1.deuxieme.equalsIgnoreCase(pair2.deuxieme));
+    }
 
     public static void main (String[] args){
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
