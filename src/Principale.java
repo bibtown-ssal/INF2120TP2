@@ -12,10 +12,15 @@ public class Principale <E> {
             "Veuillez ecrire la distance maximale de comparaison (-1 pour distance infinie): ";
     static final private String MSG_ERR_INPUT = "Une erreur est survenue, on reccomence";
     static final private String MSG_ERR_DISTANCE = "La distance doit etre -1 ou plus grande ou egale a 0";
+    static final private String MSG_ERR_PHRASE_COURTE = "Les phrases doivent avoir minimalement 2 mots";
 
-    private static double comparerPhrases(String phrase1, String phrase2, int distance ){
+
+    private static double comparerPhrases(String phrase1, String phrase2, int distance ) throws Exception{
         String[] phrase1separee = separerMots(phrase1);
         String[] phrase2separee = separerMots(phrase2);
+        if(phrase1separee.length < 2 || phrase2separee.length < 2){
+            throw new Exception();
+        }
         ArrayList<Pair<String, String>> phrase1Bigramme = new ArrayList<>();
         ArrayList<Pair<String, String>> phrase2Bigramme = new ArrayList<>();
 
@@ -46,7 +51,10 @@ public class Principale <E> {
         double s2 = set2.size();
         int i = 0;
         int j;
+        double u;
+        double v;
         boolean trouve;
+        double resultat;
 
         while(i < set1.size()){
             j = 0;
@@ -62,9 +70,15 @@ public class Principale <E> {
             }
             i++;
         }
+        u = cpt/set1.size();
+        v = cpt/s2;
+        if(u == 0.0 && v == 0.0){
+            resultat =0;
+        }else{
+            resultat = ( 2 * u * v / ( u + v ));
+        }
 
-
-        return (2*(cpt/set1.size())*(cpt/s2))/(cpt/set1.size()+cpt/s2);
+        return resultat;
     }
 
     private static void genererBigramme(String[] phrase, ArrayList<Pair<String,String>> bigrammes, int delta){
@@ -118,9 +132,11 @@ public class Principale <E> {
             }
 
         }while(distanceMax < 0 && distanceMax != -1);
-
-        System.out.println(comparerPhrases(phrase1, phrase2, distanceMax));
-
+        try {
+            System.out.println(comparerPhrases(phrase1, phrase2, distanceMax));
+        }catch(Exception e){
+            System.err.println(MSG_ERR_PHRASE_COURTE);
+        }
 
     }
 }
